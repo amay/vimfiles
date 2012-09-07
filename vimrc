@@ -180,6 +180,9 @@ set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,public/javascrip
 " Status bar
 set laststatus=2
 
+" h/l wrap to prev/next line
+set whichwrap=h,l
+
 " Prevent Vim from clobbering the scrollback buffer. See
 " http://www.shallowsky.com/linux/noaltscreen.html
 " set t_ti= t_te=
