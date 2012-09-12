@@ -138,6 +138,9 @@ Bundle 'houtsnip/vim-emacscommandline'
 " repeatable. So really it's similar to v(motion)"_p
 Bundle 'ReplaceWithRegister'
 
+" Use :BufOnly (or :BO) to close all buffers except current
+Bundle 'duff/vim-bufonly'
+
 :runtime macros/matchit.vim
 
 filetype plugin indent on
