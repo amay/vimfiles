@@ -220,7 +220,7 @@ endif
 au FileType * set expandtab
 au FileType make set noexpandtab
 
-au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru}    set ft=ruby
+au BufNewFile,BufRead {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru,*.god} set ft=ruby
 au BufNewFile,BufRead *.json set ft=javascript
 au BufNewFile,BufRead *.hamlbars set ft=haml
 au BufNewFile,BufRead *.hamlc set ft=haml
