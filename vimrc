@@ -19,127 +19,318 @@ endif
 " :BundleUpdate to update all of them
 Bundle 'gmarik/vundle'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Fugitive
 " Git in vim, use ,gs for git status then - to stage then C to commit
 " check :help Gstatus for more keys
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'tpope/vim-fugitive'
 
+map <leader>gs :Gstatus<cr>
+map <leader>gc :Gcommit<cr>
+map <leader>ga :Git add --all<cr>:Gcommit<cr>
+map <leader>gb :Gblame<cr>
+
+" Use j/k in status
+function! BufReadIndex()
+  setlocal cursorline
+  setlocal nohlsearch
+
+  nnoremap <buffer> <silent> j :call search('^#\t.*','W')<Bar>.<CR>
+  nnoremap <buffer> <silent> k :call search('^#\t.*','Wbe')<Bar>.<CR>
+endfunction
+autocmd BufReadCmd  *.git/index                      exe BufReadIndex()
+autocmd BufEnter    *.git/index                      silent normal gg0j
+
+" Start in insert mode for commit
+function! BufEnterCommit()
+  normal gg0
+  if getline('.') == ''
+    start
+  end
+endfunction
+autocmd BufEnter    *.git/COMMIT_EDITMSG             exe BufEnterCommit()
+
+" Automatically remove fugitive buffers
+autocmd BufReadPost fugitive://* set bufhidden=delete
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Surrond stuff with things. ysiw" surrounds a word with quotes
 " cs"' changes " to '
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'tpope/vim-surround'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Lets you use . to repeat some things like vim-surround
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'tpope/vim-repeat'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Comment with gc (takes a motion) or ^_^_
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'tomtom/tcomment_vim'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" CtrlP
+"
 " Open a file (like cmd-t but better). Use ,f or ,j(something, see bindings
 " below)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'kien/ctrlp.vim'
 
+" Don't manage working directory
+let g:ctrlp_working_path_mode = 0
+
+map <leader>jv :let g:ctrlp_default_input = 'app/views/'<cr>:CtrlP<cr>
+map <leader>jc :let g:ctrlp_default_input = 'app/controllers/'<cr>:CtrlP<cr>
+map <leader>jm :let g:ctrlp_default_input = 'app/models/'<cr>:CtrlP<cr>
+map <leader>jh :let g:ctrlp_default_input = 'app/helpers/'<cr>:CtrlP<cr>
+map <leader>jl :let g:ctrlp_default_input = 'lib'<cr>:CtrlP<cr>
+map <leader>jp :let g:ctrlp_default_input = 'public'<cr>:CtrlP<cr>
+map <leader>js :let g:ctrlp_default_input = 'app/stylesheets/'<cr>:CtrlP<cr>
+map <leader>jj :let g:ctrlp_default_input = 'app/javascripts/'<cr>:CtrlP<cr>
+map <leader>jf :let g:ctrlp_default_input = 'features/'<cr>:CtrlP<cr>
+map <leader>f :let g:ctrlp_default_input = 0<cr>:CtrlP<cr>
+map <leader>u :let g:ctrlp_default_input = 0<cr>:CtrlPBuffer<cr>
+map <leader><leader>f :let g:ctrlp_default_input = 0<cr>:CtrlPClearCache<cr>:CtrlP<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ack mappings
+"
 " Adds :Ack complete w/ quick fix
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'mileszs/ack.vim'
 
+map <leader>a :Ack!<space>
+map <leader>A :Ack! <C-R><C-W><CR>
+
+" Use ag for search, it's much faster than ack.
+" See https://github.com/ggreer/the_silver_searcher
+" on mac: brew install the_silver_searcher
+let g:ackprg = 'ag --nogroup --nocolor --column'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Updates your status line to show what selector you're in in sass files
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'aaronjensen/vim-sass-status'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Kills a buffer without closing a split, use ,w . Used in conjunction 
 " with command-w, below...
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'vim-scripts/bufkill.vim'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Command W
+"
 " Smarts around killing buffers, will close the split if it's the last buffer in
 " it, and close vim if it's the last buffer/split. Use ,w
-Bundle 'nathanaelkane/vim-command-w'
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Bundle 'aaronjensen/vim-command-w'
 
+nmap <leader>w :CommandW<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Shows syntax errors on several types of files
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'scrooloose/syntastic'
 
+" Enable syntastic syntax checking
+let g:syntastic_enable_signs=1
+let g:syntastic_quiet_warnings=1
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Automatically add end at the end of ruby and vim blocks
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'tpope/vim-endwise'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Add a few paired mappings, in particular [q and ]q to navigate the quickfix
 " list
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'tpope/vim-unimpaired'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Handy file manipulations. Favorites are :Remove and :Rename
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'tpope/vim-eunuch'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Allows custom textobj motions (like i" or a[)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'kana/vim-textobj-user'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Motion based on indent level. Useful in coffeescript, try vai to select
 " everything on the current indent level. vii is similar, but will not ignore
 " blank lines
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'kana/vim-textobj-indent'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Motion based on ruby blocks. vir selects in a ruby block
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'nelstrom/vim-textobj-rubyblock'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tab to indent or autocomplete depending on context
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'ervandew/supertab'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Run specs or cucumber features with ,t run only the test under the cursor
 " with ,T also remembers last run test so you can hit it again on non-test
 " files to run the last run test
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'skalnik/vim-vroom'
 
+let g:vroom_map_keys = 0
+let g:vroom_write_all = 1
+let g:vroom_use_bundle_exec = 0
+map <leader>t :VroomRunTestFile<cr>
+map <leader>T :VroomRunNearestTest<cr>
+autocmd BufNewFile,BufRead *_spec.js.coffee map <buffer> <leader>t :!guard-jasmine -s=none -p=3000 %<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim coffeescript runtime files
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'kchmck/vim-coffee-script'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Stuff for cucumber, try out ^] on a step in a feature to go to step
 " definition
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'tpope/vim-cucumber'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Updated ruby syntax and such
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'vim-ruby/vim-ruby'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Improved javascript indentation
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'pangloss/vim-javascript'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim Git runtime files
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'tpope/vim-git'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim runtime files for Haml, Sass, and SCSS
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'tpope/vim-haml'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim Markdown runtime files
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'tpope/vim-markdown'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim handlebars runtime files
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'nono/vim-handlebars'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntax for jquery keywords and selectors
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'itspriddle/vim-jquery'
-"
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim syntax for jst files
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'jeyb/vim-jst'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntax for nginx
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'mutewinter/nginx.vim'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Makes css colors show up as their actual colors, works better with CSApprox
 " or macvim
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'ap/vim-css-color'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " My favorite dark color scheme
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'mrtazz/molokai.vim'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Decent light color scheme
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'nelstrom/vim-mac-classic-theme'
 
-" vim powerline -  The ultimate vim statusline utility
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Powerline
+"
+" The ultimate vim statusline utility
+"
+" You'll need a powerline patched font.
+" You should probably use inconsolata-g (included in fonts directory)
+"
+" If not, you can patch your own.
+" See: https://github.com/Lokaltog/vim-powerline/tree/develop/fontpatcher
+" You'll probably need this too: https://github.com/jenius/Fontforge-Installer
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'Lokaltog/vim-powerline'
 
+let g:Powerline_symbols = 'fancy'
+let g:Powerline_stl_path_style = 'relative'
+call Pl#Theme#RemoveSegment('fugitive:branch')
+call Pl#Theme#RemoveSegment('fileformat')
+call Pl#Theme#RemoveSegment('fileencoding')
+call Pl#Theme#RemoveSegment('scrollpercent')
+autocmd FocusGained * call Pl#UpdateStatusline(1)
+autocmd FocusLost * call Pl#UpdateStatusline(0)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " makes the command line behave like emacs
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'houtsnip/vim-emacscommandline'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Adds gr command to replace text (takes a motion)
 " similar to v(motion)p but also cuts text into black hole register so it is
 " repeatable. So really it's similar to v(motion)"_p
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'ReplaceWithRegister'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use :BufOnly (or :BO) to close all buffers except current
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'duff/vim-bufonly'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" matchindent.vim
+"
+" Attempt to guess and automatically set the indentation settings of the
+" opened file. Works for " 2 space, 4 space and tab indentation.
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Bundle 'conormcd/matchindent.vim'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vitality.vim
+"
+" Add FocusGained/FocusLost back.
+" Requires features in HEAD tmux.
+"
+" Using my branch until tmux supports this in a released version.
+" Also this should make it so that anyone else who uses this w/o
+" the right version of tmux will be fine.
+" https://github.com/aaronjensen/vitality.vim/commit/3308bf21fb3d46d55ca84a19d228f8cf2210679d
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Bundle 'aaronjensen/vitality.vim'
+let g:vitality_fix_focus = 1
+let g:vitality_fix_cursor = 0
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Custom settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 :runtime macros/matchit.vim
 
@@ -178,7 +369,9 @@ set smartcase
 " Tab completion
 set wildmode=longest,list
 set wildmenu
-set wildignore+=*.pyc,*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,public/javascripts/compiled,bundle,tmp,*.orig,*.jpg,*.png,*.gif,log,solr,.sass-cache,.jhw-cache,bundler_stubs,build
+set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,public/javascripts/compiled
+set wildignore+=tmp,*.orig,*.jpg,*.png,*.gif,log,solr,.sass-cache,.jhw-cache
+set wildignore+=bundler_stubs,build,error_pages,bundle,build,error_pages
 
 " Status bar
 set laststatus=2
@@ -217,8 +410,7 @@ if has("autocmd")
 endif
 
 " make uses real tabs
-au FileType * set expandtab
-au FileType make set noexpandtab
+autocmd FileType make setlocal noexpandtab
 
 au BufNewFile,BufRead {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru,*.god} set ft=ruby
 au BufNewFile,BufRead *.json set ft=javascript
@@ -231,22 +423,19 @@ au FileType * set softtabstop=2 tabstop=2 shiftwidth=2
 " make Python follow PEP8 ( http://www.python.org/dev/peps/pep-0008/ )
 au FileType python set softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79
 
+autocmd FileType cs setlocal softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79
+
+autocmd FileType markdown setlocal spell spelllang=en_us textwidth=79 colorcolumn=80
+
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
+
+" Remove trailing whitespace automagically
+autocmd BufWritePre *.rb,*.coffee :%s/\s\+$//e
 
 " Inserts the path of the currently edited file into a command
 " Command mode: %%
 cmap %% <C-R>=expand("%:p:h") . "/" <CR>
-
-" Enable syntastic syntax checking
-let g:syntastic_enable_signs=1
-let g:syntastic_quiet_warnings=1
-
-" Turn off jslint errors by default
-let g:JSLintHighlightErrorLine = 0
-
-" Use Node.js for JavaScript interpretation
-let $JS_CMD='node'
 
 " MacVIM shift+arrow-keys behavior (required in .vimrc)
 let macvim_hig_shift_movement = 1
@@ -254,14 +443,43 @@ let macvim_hig_shift_movement = 1
 "map quick quit
 map <leader>qq :qa!<cr>
 
-"key mapping for window navigation
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" key mapping for window navigation
+"
+" If you're in tmux it'll keep going to tmux splits if you hit the end of
+" your vim splits.
+"
+" For the tmux side see:
+" https://github.com/aaronjensen/dotfiles/blob/e9c3551b40c43264ac2cd21d577f948192a46aea/tmux.conf#L96-L102
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if exists('$TMUX')
+  function! TmuxOrSplitSwitch(wincmd, tmuxdir)
+    let previous_winnr = winnr()
+    silent! execute "wincmd " . a:wincmd
+    if previous_winnr == winnr()
+      call system("tmux select-pane -" . a:tmuxdir)
+      redraw!
+    endif
+  endfunction
 
-" Useful for triggering a cucumber run
-nmap <Leader>rc :silent !touch features/step_definitions/web_steps.rb<CR>
+  let previous_title = substitute(system("tmux display-message -p '#{pane_title}'"), '\n', '', '')
+  let &t_ti = "\<Esc>]2;vim\<Esc>\\" . &t_ti
+  let &t_te = "\<Esc>]2;". previous_title . "\<Esc>\\" . &t_te
+
+  nnoremap <silent> <C-h> :call TmuxOrSplitSwitch('h', 'L')<cr>
+  nnoremap <silent> <C-j> :call TmuxOrSplitSwitch('j', 'D')<cr>
+  nnoremap <silent> <C-k> :call TmuxOrSplitSwitch('k', 'U')<cr>
+  nnoremap <silent> <C-l> :call TmuxOrSplitSwitch('l', 'R')<cr>
+else
+  map <C-h> <C-w>h
+  map <C-j> <C-w>j
+  map <C-k> <C-w>k
+  map <C-l> <C-w>l
+endif
+
+" Open splits below and right by default
+set splitbelow
+set splitright
 
 " Make the current directory
 nmap <leader>md :silent !mkdir -p %:h<CR>:redraw!<CR>
@@ -293,8 +511,6 @@ endfunction
 nmap <leader>[ :call SaveIfModified()<CR>:cprev<CR>
 nmap <leader>] :call SaveIfModified()<CR>:cnext<CR>
 
-nmap <leader>w :CommandW<CR>
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Much stuff stolen from Gary Bernhardt:
 " https://github.com/garybernhardt/dotfiles/blob/master/.vimrc
@@ -312,32 +528,6 @@ function! PromoteToLet()
 endfunction
 :command! PromoteToLet :call PromoteToLet()
 :map <leader>l :PromoteToLet<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CtrlP mappings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Don't manage working directory
-let g:ctrlp_working_path_mode = 0
-
-map <leader>jv :let g:ctrlp_default_input = 'app/views/'<cr>:CtrlP<cr>
-map <leader>jc :let g:ctrlp_default_input = 'app/controllers/'<cr>:CtrlP<cr>
-map <leader>jm :let g:ctrlp_default_input = 'app/models/'<cr>:CtrlP<cr>
-map <leader>jh :let g:ctrlp_default_input = 'app/helpers/'<cr>:CtrlP<cr>
-map <leader>jl :let g:ctrlp_default_input = 'lib'<cr>:CtrlP<cr>
-map <leader>jp :let g:ctrlp_default_input = 'public'<cr>:CtrlP<cr>
-map <leader>js :let g:ctrlp_default_input = 'app/stylesheets/'<cr>:CtrlP<cr>
-map <leader>jj :let g:ctrlp_default_input = 'app/javascripts/'<cr>:CtrlP<cr>
-map <leader>jf :let g:ctrlp_default_input = 'features/'<cr>:CtrlP<cr>
-map <leader>f :let g:ctrlp_default_input = 0<cr>:CtrlP<cr>
-map <leader>u :let g:ctrlp_default_input = 0<cr>:CtrlPBuffer<cr>
-map <leader><leader>f :let g:ctrlp_default_input = 0<cr>:CtrlPClearCache<cr>:CtrlP<cr>
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Ack mappings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>a :Ack!<space>
-map <leader>A :Ack! <C-R><C-W><CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ARROW KEYS ARE UNACCEPTABLE
@@ -375,52 +565,11 @@ endfunction
 au WinEnter * call ResizePreviewWindow()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vroom
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:vroom_map_keys = 0
-let g:vroom_write_all = 1
-let g:vroom_use_bundle_exec = 0
-map <leader>t :VroomRunTestFile<cr>
-map <leader>T :VroomRunNearestTest<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Copy paste system clipboard
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <leader>y "*y
 map <leader>p "*p
 map <leader>P "*P
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Fugitive
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>gs :Gstatus<cr>
-map <leader>gc :Gcommit<cr>
-map <leader>ga :Git add --all<cr>:Gcommit<cr>
-map <leader>gb :Gblame<cr>
-
-" Use j/k in status
-function! BufReadIndex()
-  setlocal cursorline
-  setlocal nohlsearch
-
-  nnoremap <buffer> <silent> j :call search('^#\t.*','W')<Bar>.<CR>
-  nnoremap <buffer> <silent> k :call search('^#\t.*','Wbe')<Bar>.<CR>
-endfunction
-autocmd BufReadCmd  *.git/index                      exe BufReadIndex()
-autocmd BufEnter    *.git/index                      silent normal gg0j
-
-" Start in insert mode for commit
-function! BufEnterCommit()
-  normal gg0
-  if getline('.') == ''
-    start
-  end
-endfunction
-autocmd BufEnter    *.git/COMMIT_EDITMSG             exe BufEnterCommit()
-
-" Automatically remove fugitive buffers
-autocmd BufReadPost fugitive://* set bufhidden=delete
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Quit help easily
@@ -431,21 +580,6 @@ function! QuitWithQ()
   endif
 endfunction
 autocmd FileType help exe QuitWithQ()
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Powerline configuration, you'll need a powerline patched font.
-" You should probably use inconsolata-g (included in fonts directory)
-"
-" If not, you can patch your own.
-" See: https://github.com/Lokaltog/vim-powerline/tree/develop/fontpatcher
-" You'll probably need this too: https://github.com/jenius/Fontforge-Installer
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:Powerline_symbols = 'fancy'
-let g:Powerline_stl_path_style = 'short'
-call Pl#Theme#RemoveSegment('fugitive:branch')
-call Pl#Theme#RemoveSegment('fileformat')
-call Pl#Theme#RemoveSegment('fileencoding')
-call Pl#Theme#RemoveSegment('scrollpercent')
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " This enables iterm cursor changes from vim. In .tmux.conf you'll need:
@@ -467,33 +601,18 @@ end
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " This fixes pasting from iterm (and some other terminals, but you'll need to
 " adjust the condition) by using "bracketed paste mode"
-" I modified it to work in tmux and not wait for esc (by using f28/f29)
+" I modified it to wait for esc (by using f28/f29)
 "
 " See: http://stackoverflow.com/questions/5585129/pasting-code-into-terminal-window-into-vim-on-mac-os-x
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Tmux wrapping borrowed from vitality.vim: https://github.com/sjl/vitality.vim
-function WrapForTmux(s)
-  if !exists('$TMUX')
-    return a:s
-  endif
+if exists('$ITERM_PROFILE') || exists('$TMUX')
+  let &t_ti = "\<Esc>[?2004h" . &t_ti
+  let &t_te = "\<Esc>[?2004l" . &t_te
 
-  let tmux_start = "\<Esc>Ptmux;"
-  let tmux_end = "\<Esc>\\"
-
-  return tmux_start . substitute(a:s, "\<Esc>", "\<Esc>\<Esc>", 'g') . tmux_end
-endfunction
-
-if exists('$ITERM_PROFILE')
-  " I'm just setting bracketed paste mode in my bashrc now. Setting and
-  " unsetting doesn't work very well with tmux as it affects other shells.
-  " put this in your bashrc: [ -n "$ITERM_PROFILE" ] && printf "\e[?2004h"
-  "
-  " let &t_ti = WrapForTmux("\<Esc>[?2004h") . &t_ti
-  " let &t_te = WrapForTmux("\<Esc>[?2004l") . &t_te
-  function XTermPasteBegin(ret)
-      set pastetoggle=<Esc>[201~
-      set paste
-      return a:ret
+  function! XTermPasteBegin(ret)
+    set pastetoggle=<Esc>[201~
+    set paste
+    return a:ret
   endfunction
 
   execute "set <f28>=\<Esc>[200~"
@@ -504,6 +623,15 @@ if exists('$ITERM_PROFILE')
   cmap <f28> <nop>
   cmap <f29> <nop>
 end
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Persistent undo
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set undofile
+set undodir=$HOME/.vim/undo
+
+set undolevels=1000
+set undoreload=10000
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LAST SECTION
