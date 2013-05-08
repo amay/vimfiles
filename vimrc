@@ -266,6 +266,7 @@ Bundle 'mrtazz/molokai.vim'
 Bundle 'nelstrom/vim-mac-classic-theme'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " Powerline
 "
 " The ultimate vim statusline utility
@@ -327,6 +328,14 @@ Bundle 'conormcd/matchindent.vim'
 Bundle 'aaronjensen/vitality.vim'
 let g:vitality_fix_focus = 1
 let g:vitality_fix_cursor = 0
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-marked
+"
+" Opens current file in Marked, an OSX markdown preview app:
+" http://markedapp.com/
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Bundle 'itspriddle/vim-marked'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Custom settings
