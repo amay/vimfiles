@@ -266,7 +266,6 @@ Bundle 'mrtazz/molokai.vim'
 Bundle 'nelstrom/vim-mac-classic-theme'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " Powerline
 "
 " The ultimate vim statusline utility
