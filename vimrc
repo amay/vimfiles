@@ -460,6 +460,11 @@ let macvim_hig_shift_movement = 1
 "map quick quit
 map <leader>qq :qa!<cr>
 
+" JSON formatting
+function! FormatJSON()
+  :%!python -m json.tool
+endfunction
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " key mapping for window navigation
 "
