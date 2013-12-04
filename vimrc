@@ -255,6 +255,12 @@ Bundle 'jeyb/vim-jst'
 Bundle 'mutewinter/nginx.vim'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Syntax for jade/blade
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Bundle 'digitaltoad/vim-jade'
+autocmd BufNewFile,BufReadPost *.blade set filetype=jade
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Makes css colors show up as their actual colors, works better with CSApprox
 " or macvim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
