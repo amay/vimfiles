@@ -137,13 +137,14 @@ nmap <leader>w :CommandW<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'scrooloose/syntastic'
 
-" Enable syntastic syntax checking
-let g:syntastic_enable_signs=1
+let g:syntastic_filetype_map = { 'handlebars.html': 'handlebars' }
+let g:syntastic_mode_map = { 'mode': 'active',
+                           \ 'active_filetypes': [],
+                           \ 'passive_filetypes': ['sass'] }
 
 autocmd BufNewFile,BufRead *._?js let g:syntastic_javascript_jshint_conf="~/.jshintrc"
 autocmd BufNewFile,BufRead */public/*.js let g:syntastic_javascript_jshint_conf="~/.jshintrc.browser"
 
-let g:syntastic_filetype_map = { 'handlebars.html': 'handlebars' }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Automatically add end at the end of ruby and vim blocks
