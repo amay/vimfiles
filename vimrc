@@ -407,6 +407,7 @@ set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,*/public/javascr
 set wildignore+=tmp,*.orig,*.jpg,*.png,*.gif,log,solr,.sass-cache,.jhw-cache
 set wildignore+=bundler_stubs,build,error_pages,bundle,build,error_pages,target,node_modules,bower_components
 set wildignore+=*/app/public/compiled,*/public/compiled,*/tmp
+set wildignore+=vendor
 
 " Status bar
 set laststatus=2
