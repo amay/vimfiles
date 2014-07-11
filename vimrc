@@ -194,6 +194,7 @@ Bundle 'skalnik/vim-vroom'
 let g:vroom_map_keys = 0
 let g:vroom_write_all = 1
 let g:vroom_use_bundle_exec = 0
+let g:vroom_use_spring = 1
 map <leader>t :VroomRunTestFile<cr>
 map <leader>T :VroomRunNearestTest<cr>
 autocmd BufNewFile,BufRead *_spec.js.coffee map <buffer> <leader>t :!guard-jasmine -s=none -p=3000 %<cr>
