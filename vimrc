@@ -197,7 +197,8 @@ let g:vroom_use_bundle_exec = 0
 let g:vroom_use_spring = 1
 map <leader>t :VroomRunTestFile<cr>
 map <leader>T :VroomRunNearestTest<cr>
-autocmd BufNewFile,BufRead *_spec.js.coffee map <buffer> <leader>t :!guard-jasmine -s=none -p=3000 %<cr>
+" autocmd BufNewFile,BufRead *_spec.js.coffee map <buffer> <leader>t :!guard-jasmine -s=none -p=3000 %<cr>
+autocmd BufNewFile,BufRead *_spec.js.coffee map <buffer> <leader>t :!spring teaspoon --server-port 3000 -g $(cat % \| grep -m 1 describe \| sed "s/describe ['\"]\(.*\)['\"].*/\1/")<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim coffeescript runtime files
