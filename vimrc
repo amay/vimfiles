@@ -206,6 +206,11 @@ autocmd BufNewFile,BufRead *_spec.js.coffee map <buffer> <leader>t :!spring teas
 Bundle 'kchmck/vim-coffee-script'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vim coffeescript JSX syntax highlighting
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Bundle 'mtscout6/vim-cjsx'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Stuff for cucumber, try out ^] on a step in a feature to go to step
 " definition
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
