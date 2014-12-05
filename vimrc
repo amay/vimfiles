@@ -137,6 +137,7 @@ nmap <leader>w :CommandW<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'scrooloose/syntastic'
 
+let g:syntastic_javascript_checkers = ['jsxhint']
 let g:syntastic_filetype_map = { 'handlebars.html': 'handlebars' }
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': [],
@@ -206,8 +207,9 @@ autocmd BufNewFile,BufRead *_spec.js.coffee map <buffer> <leader>t :!spring teas
 Bundle 'kchmck/vim-coffee-script'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vim coffeescript JSX syntax highlighting
+" JSX syntax highlighting
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Bundle 'mxw/vim-jsx'
 Bundle 'mtscout6/vim-cjsx'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
