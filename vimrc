@@ -83,8 +83,14 @@ Bundle 'kien/ctrlp.vim'
 " Don't manage working directory
 let g:ctrlp_working_path_mode = 0
 
-" Only index files in source control
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+if executable('ag')
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s --files-with-matches --nocolor -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
+else
+  " Fall back to using git ls-files if Ag is not available
+  let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
+  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others']
+endif
 
 map <leader>jv :let g:ctrlp_default_input = 'app/views/'<cr>:CtrlP<cr>
 map <leader>jc :let g:ctrlp_default_input = 'app/controllers/'<cr>:CtrlP<cr>
