@@ -404,6 +404,7 @@ Plugin 'tpope/vim-fireplace'
 " :Console
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plugin 'tpope/vim-leiningen'
+Plugin 'tpope/vim-dispatch'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Custom settings
