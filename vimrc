@@ -1,11 +1,25 @@
-set nocompatible
+if has('vim_starting')
+ if &compatible
+   set nocompatible
+ endif
+
+ set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+
 let mapleader = ","
 
-" Vundle
-filetype on
-filetype off
-set rtp+=~/.vim/bundle/vundle
-call vundle#rc()
+" NeoBundle
+call neobundle#begin(expand('~/.vim/bundle/'))
+NeoBundleFetch 'Shougo/neobundle.vim'
+NeoBundle 'Shougo/vimproc.vim', {
+      \   'build' : {
+      \     'windows' : 'tools\\update-dll-mingw',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make -f make_mac.mak',
+      \     'linux' : 'make',
+      \     'unix' : 'gmake',
+      \   }
+      \ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Include user's local vim bundles
@@ -15,17 +29,13 @@ if filereadable(expand("~/.vim_bundles.local"))
   source ~/.vim_bundles.local
 endif
 
-" Bundler for vim, use :BundleInstall to install these bundles and
-" :BundleUpdate to update all of them
-Bundle 'gmarik/vundle'
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Fugitive
 " Git in vim, use ,gs for git status then - to stage then C to commit
 " check :help Gstatus for more keys
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-fugitive'
 
 map <leader>gs :Gstatus<cr>
 map <leader>gc :Gcommit<cr>
@@ -60,17 +70,17 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " Surrond stuff with things. ysiw" surrounds a word with quotes
 " cs"' changes " to '
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-surround'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Lets you use . to repeat some things like vim-surround
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'tpope/vim-repeat'
+NeoBundle 'tpope/vim-repeat'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Comment with gc (takes a motion) or ^_^_
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'tomtom/tcomment_vim'
+NeoBundle 'tomtom/tcomment_vim'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CtrlP
@@ -78,7 +88,15 @@ Bundle 'tomtom/tcomment_vim'
 " Open a file (like cmd-t but better). Use ,f or ,j(something, see bindings
 " below)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'kien/ctrlp.vim'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'JazzCore/ctrlp-cmatcher', {
+      \   'build' : {
+      \     'windows' : 'install_windows.bat',
+      \     'mac' : './install.sh',
+      \     'linux' : './install.sh',
+      \     'unix' : './install.sh',
+      \    }
+      \  }
 
 " Don't manage working directory
 let g:ctrlp_working_path_mode = 0
@@ -110,7 +128,7 @@ map <leader><leader>f :let g:ctrlp_default_input = 0<cr>:CtrlPClearCache<cr>:Ctr
 "
 " Adds :Ack complete w/ quick fix
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'mileszs/ack.vim'
+NeoBundle 'mileszs/ack.vim'
 
 map <leader>a :Ack!<space>
 map <leader>A :Ack! <C-R><C-W><CR>
@@ -123,13 +141,13 @@ let g:ackprg = 'ag --nogroup --nocolor --column --smart-case'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Updates your status line to show what selector you're in in sass files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'aaronjensen/vim-sass-status'
+NeoBundle 'aaronjensen/vim-sass-status'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Kills a buffer without closing a split, use ,w . Used in conjunction 
 " with command-w, below...
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'vim-scripts/bufkill.vim'
+NeoBundle 'vim-scripts/bufkill.vim'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Command W
@@ -137,14 +155,14 @@ Bundle 'vim-scripts/bufkill.vim'
 " Smarts around killing buffers, will close the split if it's the last buffer in
 " it, and close vim if it's the last buffer/split. Use ,w
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'aaronjensen/vim-command-w'
+NeoBundle 'aaronjensen/vim-command-w'
 
 nmap <leader>w :CommandW<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Shows syntax errors on several types of files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'scrooloose/syntastic'
+NeoBundle 'scrooloose/syntastic'
 
 let g:syntastic_javascript_checkers = ['jsxhint']
 let g:syntastic_filetype_map = { 'handlebars.html': 'handlebars' }
@@ -159,47 +177,47 @@ autocmd BufNewFile,BufRead */public/*.js let g:syntastic_javascript_jshint_conf=
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Automatically add end at the end of ruby and vim blocks
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'tpope/vim-endwise'
+NeoBundle 'tpope/vim-endwise'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Add a few paired mappings, in particular [q and ]q to navigate the quickfix
 " list
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'tpope/vim-unimpaired'
+NeoBundle 'tpope/vim-unimpaired'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Handy file manipulations. Favorites are :Remove and :Rename
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'tpope/vim-eunuch'
+NeoBundle 'tpope/vim-eunuch'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Allows custom textobj motions (like i" or a[)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'kana/vim-textobj-user'
+NeoBundle 'kana/vim-textobj-user'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Motion based on indent level. Useful in coffeescript, try vai to select
 " everything on the current indent level. vii is similar, but will not ignore
 " blank lines
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'kana/vim-textobj-indent'
+NeoBundle 'kana/vim-textobj-indent'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Motion based on ruby blocks. vir selects in a ruby block
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'nelstrom/vim-textobj-rubyblock'
+NeoBundle 'nelstrom/vim-textobj-rubyblock'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tab to indent or autocomplete depending on context
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'ervandew/supertab'
+NeoBundle 'ervandew/supertab'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Run specs or cucumber features with ,t run only the test under the cursor
 " with ,T also remembers last run test so you can hit it again on non-test
 " files to run the last run test
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'skalnik/vim-vroom'
+NeoBundle 'skalnik/vim-vroom'
 
 let g:vroom_map_keys = 0
 let g:vroom_write_all = 1
@@ -213,93 +231,96 @@ autocmd BufNewFile,BufRead *_spec.js.coffee map <buffer> <leader>t :!spring teas
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim coffeescript runtime files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'kchmck/vim-coffee-script'
+NeoBundle 'kchmck/vim-coffee-script'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " JSX syntax highlighting
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'mxw/vim-jsx'
-Bundle 'mtscout6/vim-cjsx'
+NeoBundle 'mxw/vim-jsx'
+NeoBundle 'mtscout6/vim-cjsx'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Stuff for cucumber, try out ^] on a step in a feature to go to step
 " definition
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'tpope/vim-cucumber'
+NeoBundle 'tpope/vim-cucumber'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Updated ruby syntax and such
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'vim-ruby/vim-ruby'
+NeoBundle 'vim-ruby/vim-ruby'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Improved javascript indentation
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'pangloss/vim-javascript'
+NeoBundle 'pangloss/vim-javascript'
 
 autocmd BufNewFile,BufRead *._js set filetype=javascript
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim Git runtime files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'tpope/vim-git'
+NeoBundle 'tpope/vim-git'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim runtime files for Haml, Sass, and SCSS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'tpope/vim-haml'
+NeoBundle 'tpope/vim-haml'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim syntax for LESS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'groenewege/vim-less'
+NeoBundle 'groenewege/vim-less'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim Markdown runtime files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'tpope/vim-markdown'
+NeoBundle 'tpope/vim-markdown'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim handlebars runtime files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'nono/vim-handlebars'
+NeoBundle 'nono/vim-handlebars'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntax for jquery keywords and selectors
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'itspriddle/vim-jquery'
+NeoBundle 'itspriddle/vim-jquery'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim syntax for jst files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'jeyb/vim-jst'
+NeoBundle 'jeyb/vim-jst'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntax for nginx
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'mutewinter/nginx.vim'
+NeoBundle 'mutewinter/nginx.vim'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntax for jade/blade
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'digitaltoad/vim-jade'
+NeoBundle 'digitaltoad/vim-jade'
 autocmd BufNewFile,BufReadPost *.blade set filetype=jade
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Makes css colors show up as their actual colors, works better with CSApprox
 " or macvim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'ap/vim-css-color'
+NeoBundle 'ap/vim-css-color'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " My favorite dark color scheme
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'mrtazz/molokai.vim'
+NeoBundle 'tomasr/molokai'
+let g:rehash256 = 1
+let g:molokai_original = 1
+set t_Co=256
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Decent light color scheme
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'nelstrom/vim-mac-classic-theme'
+NeoBundle 'nelstrom/vim-mac-classic-theme'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Powerline
@@ -313,33 +334,33 @@ Bundle 'nelstrom/vim-mac-classic-theme'
 " See: https://github.com/Lokaltog/vim-powerline/tree/develop/fontpatcher
 " You'll probably need this too: https://github.com/jenius/Fontforge-Installer
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'Lokaltog/vim-powerline'
+NeoBundle 'Lokaltog/vim-powerline'
 
 let g:Powerline_symbols = 'fancy'
 let g:Powerline_stl_path_style = 'relative'
-call Pl#Theme#RemoveSegment('fugitive:branch')
-call Pl#Theme#RemoveSegment('fileformat')
-call Pl#Theme#RemoveSegment('fileencoding')
-call Pl#Theme#RemoveSegment('scrollpercent')
+" call Pl#Theme#RemoveSegment('fugitive:branch')
+" call Pl#Theme#RemoveSegment('fileformat')
+" call Pl#Theme#RemoveSegment('fileencoding')
+" call Pl#Theme#RemoveSegment('scrollpercent')
 autocmd FocusGained * call Pl#UpdateStatusline(1)
 autocmd FocusLost * call Pl#UpdateStatusline(0)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " makes the command line behave like emacs
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'houtsnip/vim-emacscommandline'
+NeoBundle 'houtsnip/vim-emacscommandline'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Adds gr command to replace text (takes a motion)
 " similar to v(motion)p but also cuts text into black hole register so it is
 " repeatable. So really it's similar to v(motion)"_p
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'ReplaceWithRegister'
+NeoBundle 'ReplaceWithRegister'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use :BufOnly (or :BO) to close all buffers except current
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'duff/vim-bufonly'
+NeoBundle 'duff/vim-bufonly'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " matchindent.vim
@@ -347,7 +368,7 @@ Bundle 'duff/vim-bufonly'
 " Attempt to guess and automatically set the indentation settings of the
 " opened file. Works for " 2 space, 4 space and tab indentation.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'conormcd/matchindent.vim'
+NeoBundle 'conormcd/matchindent.vim'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vitality.vim
@@ -360,7 +381,7 @@ Bundle 'conormcd/matchindent.vim'
 " the right version of tmux will be fine.
 " https://github.com/aaronjensen/vitality.vim/commit/3308bf21fb3d46d55ca84a19d228f8cf2210679d
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'aaronjensen/vitality.vim'
+NeoBundle 'aaronjensen/vitality.vim'
 let g:vitality_fix_focus = 1
 let g:vitality_fix_cursor = 0
 
@@ -370,7 +391,7 @@ let g:vitality_fix_cursor = 0
 " Opens current file in Marked, an OSX markdown preview app:
 " http://markedapp.com/
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'itspriddle/vim-marked'
+NeoBundle 'itspriddle/vim-marked'
 
 let g:marked_app = "Marked"
 
@@ -379,7 +400,7 @@ let g:marked_app = "Marked"
 "
 " Support for java velocity templates.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'lepture/vim-velocity'
+NeoBundle 'lepture/vim-velocity'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Clojure stuff
@@ -396,15 +417,18 @@ Bundle 'lepture/vim-velocity'
 " cqq - Populate REPL w/ current expression
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plugin 'tpope/vim-fireplace'
+NeoBundle 'tpope/vim-fireplace'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Leiningen stuff
 "
 " :Console
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plugin 'tpope/vim-leiningen'
-Plugin 'tpope/vim-dispatch'
+NeoBundle 'tpope/vim-leiningen'
+NeoBundle 'tpope/vim-dispatch'
+
+call neobundle#end()
+NeoBundleCheck
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Custom settings
@@ -463,7 +487,6 @@ set whichwrap=h,l
 " http://www.shallowsky.com/linux/noaltscreen.html
 " set t_ti= t_te=
 
-set t_Co=256
 let g:CSApprox_attr_map = { 'bold' : 'bold', 'italic' : '', 'sp' : '' }
 let g:CSApprox_eterm = 1
 color molokai
