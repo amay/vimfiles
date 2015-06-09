@@ -6,7 +6,7 @@ if has('vim_starting')
  set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
-let mapleader = ","
+let mapleader = " "
 
 " NeoBundle
 call neobundle#begin(expand('~/.vim/bundle/'))
